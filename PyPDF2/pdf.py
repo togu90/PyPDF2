@@ -2251,10 +2251,16 @@ class PageObject(DictionaryObject):
             return stream
         stream = ContentStream(stream, pdf)
         for operands, operator in stream.operations:
-            for i in range(len(operands)):
-                op = operands[i]
-                if isinstance(op, NameObject):
-                    operands[i] = rename.get(op,op)
+            if isinstance(operands, list):
+                for i in range(len(operands)):
+                    op = operands[i]
+                    if isinstance(op, NameObject):
+                        operands[i] = rename.get(op,op)
+            elif isinstance(operands, dict):
+                for i in operands:
+                    op = operands[i]
+                    if isinstance(op, NameObject):
+                        operands[i] = rename.get(op,op)
         return stream
     _contentStreamRename = staticmethod(_contentStreamRename)
 
